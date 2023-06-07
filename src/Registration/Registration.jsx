@@ -1,21 +1,29 @@
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
+import useAuth from "../hock/useAuth";
+import { Link } from "react-router-dom";
 
 
 const Registration = () => {
     const { getValues, register, handleSubmit, watch, formState: { errors } } = useForm();
-
+    const {createUser, user} = useAuth();
     const onSubmit = data => {
         console.log(data)
+        createUser(data.email, data.password)
     };
+    console.log(user)
     return (
         <div>
     <Helmet>
         <title>Camp Haat - Registration</title>
     </Helmet>
-    <div className="hero min-h-screen bg-base-200">
-  <div className="flex-col lg:flex-row-reverse w-1/4">
-    <div className="card flex-shrink-0 w-full shadow-2xl bg-base-100">
+    <div className="hero min-h-screen">
+  <div className="flex md:flex-row my-10 w-3/4 gap-10">
+  <div className="text-center lg:text-left">
+      <h1 className="text-5xl font-bold">Register!</h1>
+      <img src="../../assest/81107-welcome.gif" alt="" />
+    </div>
+    <div className="card flex-shrink-0 w-1/2 shadow-2xl bg-base-100 ">
       <form onSubmit={handleSubmit(onSubmit)} className="card-body">
       <div className="form-control">
           <label className="label">
@@ -48,9 +56,6 @@ const Registration = () => {
           },
           })} />
           {errors.password && <span className="text-red-600 mt-2">{errors.password.message}</span>}
-          <label className="label">
-            <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-          </label>
         </div>
         <div className="form-control">
           <label className="label">
@@ -85,6 +90,7 @@ const Registration = () => {
         <div className="form-control mt-6">
           <button className="btn btn-primary">Register</button>
         </div>
+       <p>Already a member? <Link to='/login'>Login</Link></p>
       </form>
     </div>
   </div>
