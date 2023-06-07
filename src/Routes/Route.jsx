@@ -4,6 +4,9 @@ import Login from "../Registration/Login";
 import Main from "../Main/Main";
 import Home from "../Home/Home/Home";
 import ErrorPage from "../Pages/ErrorPage";
+import Dashboard from "../Dashboard/Dashboard/Dashboard";
+import AllUsers from "../Dashboard/AllUsers/AllUsers";
+import StudentDashboard from "../Dashboard/StudentDashboard/StudentDashboard";
 
 export const router = createBrowserRouter([
     {
@@ -25,4 +28,19 @@ export const router = createBrowserRouter([
         }
       ],
     },
+    {
+        path:'/dashboard',
+        element:<Dashboard></Dashboard>,
+        errorElement:<ErrorPage/>,
+        children:[
+            {
+                path:'studentdashboard',
+                element: <StudentDashboard></StudentDashboard>
+            },
+            {
+                path:'allusers',
+                element:<AllUsers></AllUsers>
+            }
+        ]
+    }
   ]);
