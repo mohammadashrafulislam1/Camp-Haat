@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import useAuth from "../hock/useAuth";
 import { Link } from "react-router-dom";
+import SocialLogin from "../shared/SocialLogin/SocialLogin";
 
 
 const Login = () => {
@@ -45,8 +46,10 @@ const Login = () => {
         <div className="form-control mt-6">
           <button className="btn btn-primary">Login</button>
         </div>
-        
        <p>Not a member? <Link to='/register'>Register</Link></p>
+
+       <div className="divider"></div>
+       <SocialLogin></SocialLogin>
       </form>
     </div>
   </div>
