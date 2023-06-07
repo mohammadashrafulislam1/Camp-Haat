@@ -29,7 +29,7 @@ const Header = () => {
       {navItems}
     </ul>
   </div>
-  <div className="navbar-end">
+  <div className="navbar-end z-10">
   {user? <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom"  data-tip={`${user?.displayName}`}>
         <div className="w-10 rounded-full">

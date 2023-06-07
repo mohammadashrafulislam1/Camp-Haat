@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.thumbs-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

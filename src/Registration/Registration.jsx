@@ -1,17 +1,60 @@
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import useAuth from "../hock/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 const Registration = () => {
-    const { getValues, register, handleSubmit, watch, formState: { errors } } = useForm();
-    const {createUser, user} = useAuth();
-    const onSubmit = data => {
-        console.log(data)
-        createUser(data.email, data.password)
-    };
-    console.log(user)
+  const navigate = useNavigate();
+  const {
+    getValues,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { createUser, user, updateUserProfile, reset } = useAuth();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    createUser(data.email, data.password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        updateUserProfile(data.name, data.url)
+        .then(() => {
+          const saveUser = {
+            name: data.name,
+            email: data.email,
+            role: data.role,
+          };
+          fetch("http://localhost:5000/users", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(saveUser),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res)
+              if (res.insertedId) {
+                navigate('/')
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: `Successfully created your ${data.role} account`,
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }
+            });
+        });
+      });
+  };
+
+  console.log(user);
+
     return (
         <div>
     <Helmet>
