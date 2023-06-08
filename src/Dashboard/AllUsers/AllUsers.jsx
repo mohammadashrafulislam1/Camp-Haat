@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
 
 const AllUsers = () => {
   const { data: users = [], refetch } = useQuery(["users"], async () => {
@@ -10,6 +11,9 @@ const AllUsers = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Dashboard - All Users</title>
+    </Helmet>
       <h1>Total Users: {users?.length}</h1>
       <div className="overflow-x-auto">
   <table className="table">
@@ -21,6 +25,7 @@ const AllUsers = () => {
         <th>Email</th>
         <th>Role</th>
         <th>Action</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -29,25 +34,20 @@ const AllUsers = () => {
             <td>{index+1}</td>
             <td>
               <div className="flex items-center space-x-3">
-                <div className="avatar">
-                  <div className="mask mask-squircle w-12 h-12">
-                    <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
-                  </div>
-                </div>
                 <div>
-                  <div className="font-bold">Hart Hagerty</div>
-                  <div className="text-sm opacity-50">United States</div>
+                  <div className="font-bold">{user?.name}</div>
                 </div>
               </div>
             </td>
             <td>
-              Zemlak, Daniel and Leannon
-              <br/>
-              <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
+              {user?.email}
             </td>
-            <td>Purple</td>
+            <td>{user?.role}</td>
             <th>
-              <button className="btn btn-ghost btn-xs">details</button>
+              <button className="btn btn-primary btn-xs">{user.role === 'admin' ? 'Admin' : 'Make Admin'}</button>
+            </th>
+            <th>
+              <button className="btn btn-warning btn-xs">Delete</button>
             </th>
           </tr>)
       }
