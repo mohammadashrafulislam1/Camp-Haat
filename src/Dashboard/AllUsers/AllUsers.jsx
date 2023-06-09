@@ -18,7 +18,7 @@ const AllUsers = () => {
       if(data.modifiedCount){
         Swal.fire(
           'Good job!',
-          `Made ${user.name} 'Admin' Successfully`,
+          `${user.name} is now an'Admin'`,
           'success'
         )
       }
