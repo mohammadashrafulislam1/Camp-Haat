@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hock/useAuth";
+import useAxiosSecure from "../../hock/useAxiosSecure";
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const MyCourses = () => {
     const {user} = useAuth();
+    const [axiosSecure] =useAxiosSecure();
     const [mycourses, setMycourses] = useState();
     const url = `http://localhost:5000/mycourses?email=${user.email}`;
     useEffect(()=>{
@@ -12,10 +16,27 @@ const MyCourses = () => {
             setMycourses(data)
         })
     })
-    console.log(mycourses)
+    const handleDelete=id=>{
+        console.log(id)
+        axiosSecure.delete(`/mycourses/${id}`)
+        .then(res => {
+            if(res.data.deletedCount >0){
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Successfully Deleted',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+            }
+        })
+    }
     return (
         <div className="overflow-x-auto">
-  <table className="table">
+    <Helmet>
+        <title>Dashboard - My Courses</title>
+    </Helmet>
+  <table className="table border rounded-lg p-10 my-10">
     {/* head */}
     <thead>
       <tr>

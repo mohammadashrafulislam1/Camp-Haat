@@ -35,6 +35,7 @@ const AddCourse = () => {
             axiosSecure.post('/courses', courseItem)
             .then(res =>{
              if(res.data.insertedId){
+                reset()
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
