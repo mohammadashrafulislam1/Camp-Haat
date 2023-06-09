@@ -13,6 +13,7 @@ import AddCourse from "../Dashboard/TeacherDashboard/AddCourse";
 import MyCourses from "../Dashboard/MyCourses/MyCourses";
 import Instructor from "../Pages/Instructor/Instructor";
 import Classes from "../Pages/Classes/Classes";
+import Details from "../Pages/Classes/Details/Details";
 
 export const router = createBrowserRouter([
     {
@@ -39,7 +40,13 @@ export const router = createBrowserRouter([
         {
           path:'classes',
           element:<Classes></Classes>
+        },
+        {
+          path: 'courses/:id',
+          element: <Details />,
+          loader: ({ params }) => fetch(`http://localhost:5000/courses/${params.id}`)
         }
+        
       ],
     },
     {

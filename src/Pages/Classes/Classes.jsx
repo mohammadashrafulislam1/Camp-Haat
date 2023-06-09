@@ -28,7 +28,7 @@ const Classes = () => {
               <p className="text-gray-700 text-base">Author: <span className="font-bold">{classItem.instructor}</span></p>
             </div>
             <p className="text-gray-700 text-base">{classItem?.details}</p>
-            <Link to={`/details/${classItem._id}`}><button className="btn btn-primary btn-sm my-5">Details</button></Link>
+            <Link to={`/courses/${classItem._id}`}><button className="btn btn-primary btn-sm my-5">Details</button></Link>
           </div>
         </div>
       ))}
