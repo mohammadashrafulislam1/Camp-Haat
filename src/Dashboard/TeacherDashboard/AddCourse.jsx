@@ -2,10 +2,13 @@ import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useAuth from "../../hock/useAuth";
+import useAxiosSecure from "../../hock/useAxiosSecure";
+import Swal from "sweetalert2";
 
  const imgHostingToken =import.meta.env.VITE_Img_Upload_Token;
 const AddCourse = () => {
     const imgHostingUrl =`https://api.imgbb.com/1/upload?key=${imgHostingToken}`;
+    const [axiosSecure] =useAxiosSecure();
     const {user} = useAuth();
     const {
         getValues,
@@ -27,11 +30,22 @@ const AddCourse = () => {
         if(imgResponse.success){
             const imgUrl = imgResponse.data.display_url;
             const {name, price, details, seats} = data;
-            const courseItem ={name, price: parseFloat(price), details, seats, image: imgUrl}
+            const courseItem ={name, price: parseFloat(price), instructor: user?.displayName, details, seats, image: imgUrl, email: user?.email}
             console.log(courseItem)
+            axiosSecure.post('/courses', courseItem)
+            .then(res =>{
+             if(res.data.insertedId){
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `${user.displayName}; Your Course has been added.`,
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+             }
+            })
         }
         })
-       console.log(data)
       }
     return (
         <div className="w-full border p-10 my-10 rounded-lg text-center">
@@ -51,13 +65,13 @@ const AddCourse = () => {
               <label className="label">
                 <span className="label-text">Instructor Name<span className="text-red-600">*</span></span>
               </label>
-              <input type="text" placeholder="name" className="input input-bordered w-full" readOnly defaultValue={user?.displayName}/>
+              <input type="text" placeholder="Instructor" className="input input-bordered w-full" readOnly defaultValue={user?.displayName}/>
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Instructor Email<span className="text-red-600">*</span></span>
               </label>
-              <input type="text" placeholder="name" className="input input-bordered w-full" readOnly defaultValue={user?.email}/>
+              <input type="email" placeholder="email" className="input input-bordered w-full" readOnly defaultValue={user?.email}/>
             </div>
         <div className="flex gap-10">
         <div className="form-control">
