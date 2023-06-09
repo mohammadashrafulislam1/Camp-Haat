@@ -12,6 +12,7 @@ import AdminDashboard from "../Dashboard/AdminDashboard/AdminDashboard";
 import AddCourse from "../Dashboard/TeacherDashboard/AddCourse";
 import MyCourses from "../Dashboard/MyCourses/MyCourses";
 import Instructor from "../Pages/Instructor/Instructor";
+import Classes from "../Pages/Classes/Classes";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
         {
           path:'instructors',
           element:<Instructor></Instructor>
+        },
+        {
+          path:'classes',
+          element:<Classes></Classes>
         }
       ],
     },

@@ -3,11 +3,14 @@ import { useQuery } from "react-query";
 
 const Instructor = () => {
     const [instructors, setInstructors] =useState()
-    useEffect(()=>{
+    useEffect(() => {
         fetch('http://localhost:5000/users')
-        .then(res => res.json())
-        .then(data => setInstructors(data))
-    },[])
+          .then(res => res.json())
+          .then(data => {
+            const instructorData = data.filter(item => item.role === "Instructor");
+            setInstructors(instructorData);
+          });
+      }, []);
     console.log(instructors)
     return (
         <div className="grid grid-cols-3 gap-10 my-20">
