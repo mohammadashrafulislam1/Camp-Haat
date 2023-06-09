@@ -3,15 +3,34 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useAuth from "../../hock/useAuth";
 
+ const imgHostingToken =import.meta.env.VITE_Img_Upload_Token;
 const AddCourse = () => {
+    const imgHostingUrl =`https://api.imgbb.com/1/upload?key=${imgHostingToken}`;
     const {user} = useAuth();
     const {
         getValues,
         register,
+        reset,
         handleSubmit,
         formState: { errors },
       } = useForm();
       const onSubmit = (data) => {
+        const formData = new FormData()
+        formData.append('image', data.image[0])
+
+        fetch(imgHostingUrl, {
+            method:'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(imgResponse => {
+        if(imgResponse.success){
+            const imgUrl = imgResponse.data.display_url;
+            const {name, price, details, seats} = data;
+            const courseItem ={name, price: parseFloat(price), details, seats, image: imgUrl}
+            console.log(courseItem)
+        }
+        })
        console.log(data)
       }
     return (
@@ -59,10 +78,17 @@ const AddCourse = () => {
               <label className="label">
                 <span className="label-text">Add a Photo<span className="text-red-600">*</span></span>
               </label>
-              <input type="file" className="file-input file-input-bordered file-input-primary w-full max-w-xs" {...register("file", {required:{ value: true, message: "This field is required" }})}/>
-              {errors.file && <span className="text-red-600 mt-2">{errors.file.message}</span>}
+              <input type="file" className="file-input file-input-bordered file-input-primary w-full max-w-xs" {...register("image", {required:{ value: true, message: "This field is required" }})}/>
+              {errors.image && <span className="text-red-600 mt-2">{errors.image.message}</span>}
             </div>
         </div>
+        <div className="form-control">
+              <label className="label">
+                <span className="label-text">Details<span className="text-red-600">*</span></span>
+              </label>
+              <textarea className="textarea textarea-bordered h-[200px]" placeholder="Details" {...register("details", {required:{ value: true, message: "This field is required" }})}></textarea>
+              {errors.details && <span className="text-red-600 mt-2">{errors.details.message}</span>}
+            </div>
             <div className="form-control mt-6">
               <button className="btn btn-primary w-full">Add a course</button>
             </div>

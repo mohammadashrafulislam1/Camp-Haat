@@ -10,8 +10,8 @@ const Dashboard = () => {
       <Helmet>
         <title>Camp Haat - Dashboard</title>
     </Helmet>
-       <div className="flex overflow-hidden">
-        <div className=" lg:drawer-open">
+       <div className="flex overflow-hidden ">
+        <div className=" lg:drawer-open fixed">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
           {/* Page content here */}
