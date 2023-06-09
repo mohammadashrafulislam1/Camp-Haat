@@ -10,6 +10,7 @@ import StudentDashboard from "../Dashboard/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "../Dashboard/TeacherDashboard/TeacherDashboard";
 import AdminDashboard from "../Dashboard/AdminDashboard/AdminDashboard";
 import AddCourse from "../Dashboard/TeacherDashboard/AddCourse";
+import MyCourses from "../Dashboard/MyCourses/MyCourses";
 
 export const router = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
             {
               path:'addcourse',
               element:<AddCourse></AddCourse>
+            },
+            {
+              path:'mycourses',
+              element:<MyCourses></MyCourses>
             },
             // Student area
             {
