@@ -7,6 +7,9 @@ import ErrorPage from "../Pages/ErrorPage";
 import Dashboard from "../Dashboard/Dashboard/Dashboard";
 import AllUsers from "../Dashboard/AllUsers/AllUsers";
 import StudentDashboard from "../Dashboard/StudentDashboard/StudentDashboard";
+import TeacherDashboard from "../Dashboard/TeacherDashboard/TeacherDashboard";
+import AdminDashboard from "../Dashboard/AdminDashboard/AdminDashboard";
+import AddCourse from "../Dashboard/TeacherDashboard/AddCourse";
 
 export const router = createBrowserRouter([
     {
@@ -33,14 +36,30 @@ export const router = createBrowserRouter([
         element:<Dashboard></Dashboard>,
         errorElement:<ErrorPage/>,
         children:[
+          // Admin area
+            {
+              path:'admindashboard',
+              element:<AdminDashboard></AdminDashboard>
+            },
+            {
+              path:'allusers',
+              element:<AllUsers></AllUsers>
+            },
+            // Teacher area
+            {
+              path:'teacherdashboard',
+              element:<TeacherDashboard></TeacherDashboard>
+            },
+            {
+              path:'addcourse',
+              element:<AddCourse></AddCourse>
+            },
+            // Student area
             {
                 path:'studentdashboard',
                 element: <StudentDashboard></StudentDashboard>
             },
-            {
-                path:'allusers',
-                element:<AllUsers></AllUsers>
-            }
+            
         ]
     }
   ]);
