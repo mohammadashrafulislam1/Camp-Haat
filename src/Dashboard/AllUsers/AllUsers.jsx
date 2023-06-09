@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const { data: users = [], refetch } = useQuery(["users"], async () => {
@@ -7,8 +8,22 @@ const AllUsers = () => {
     return res.json();
   });
 
-  console.log(users);
-
+  const handleMakeAdmin = user =>{
+    fetch(`http://localhost:5000/users/admin/${user._id}`,
+    {
+      method:'PATCH'
+    })
+    .then(res => res.json())
+    .then(data =>{
+      if(data.modifiedCount){
+        Swal.fire(
+          'Good job!',
+          `Made ${user.name} 'Admin' Successfully`,
+          'success'
+        )
+      }
+    })
+  }
   return (
     <div>
       <Helmet>
@@ -44,7 +59,7 @@ const AllUsers = () => {
             </td>
             <td>{user?.role}</td>
             <th>
-              <button className="btn btn-primary btn-xs">{user.role === 'admin' ? 'Admin' : 'Make Admin'}</button>
+              {user.role === 'admin' ? <button className="btn btn-xs">Admin</button> : <button className="btn btn-primary btn-xs" onClick={() => handleMakeAdmin(user)}>Make Admin</button>}
             </th>
             <th>
               <button className="btn btn-warning btn-xs">Delete</button>
