@@ -14,6 +14,7 @@ import MyCourses from "../Dashboard/MyCourses/MyCourses";
 import Instructor from "../Pages/Instructor/Instructor";
 import Classes from "../Pages/Classes/Classes";
 import Details from "../Pages/Classes/Details/Details";
+import MyCarts from "../Dashboard/StudentDashboard/MyCarts/MyCarts";
 
 export const router = createBrowserRouter([
     {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
                 path:'studentdashboard',
                 element: <StudentDashboard></StudentDashboard>
             },
+            {
+              path:'mycarts',
+              element:<MyCarts></MyCarts>
+            }
             
         ]
     }
