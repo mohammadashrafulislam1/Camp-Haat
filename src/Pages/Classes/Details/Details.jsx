@@ -8,7 +8,13 @@ const Details = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [course, setCourse] = useState(null);
+    const [allusers, setAllUsers] = useState();
     const {user} = useAuth();
+    useEffect(()=>{
+      fetch('http://localhost:5000/users')
+      .then(res => res.json())
+      .then(data => setAllUsers(data))
+    },[])
     useEffect(() => {
       Aos.init();
       fetch(`http://localhost:5000/courses/${id}`)
@@ -16,10 +22,10 @@ const Details = () => {
         .then((data) => setCourse(data))
         .catch((error) => console.log(error));
     }, [id]);
-   console.log(course)
    const handleEnroll = (course) => {
-    if (user) {
-      if (course.seats > 0) {
+    {allusers?.map(oneuser =>{
+     if (oneuser.role === 'Student') {
+      if (course?.seats > 0) {
         const updatedCourse = {
           ...course,
           seats: course.seats - 1,
@@ -44,7 +50,7 @@ const Details = () => {
       headers: {
       'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...updatedCourse, _id: undefined }),
+      body: JSON.stringify({ ...updatedCourse, _id: undefined, enrollEmail: user?.email }),
     })
                 .then((res) => res.json())
                 .then((data) => {
@@ -76,7 +82,7 @@ const Details = () => {
       }
     } else {
       Swal.fire({
-        title: 'Please Login First.',
+        title: 'Please Login First. Or login as a Student',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Login Now',
@@ -88,6 +94,7 @@ const Details = () => {
         }
       });
     }
+    })}
   };
   
   
