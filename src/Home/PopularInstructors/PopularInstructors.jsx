@@ -31,9 +31,9 @@ const PopularInstructors = () => {
         effect={"cards"}
         grabCursor={true}
         modules={[EffectCards]}
-        className="mySwiper" data-aos="flip-down" data-aos-offset="200"
+        className="mySwiper mb-20" data-aos="flip-down" data-aos-offset="200"
       >
-        {instructors?.map(instructor =><SwiperSlide key={instructor._id}><img src={instructor.photo} alt="" /></SwiperSlide>)}
+        {instructors?.map(instructor =><SwiperSlide key={instructor._id} className="relative"><img className="h-full" src={instructor.photo} alt="" /><p className="absolute bottom-6 bg-black rounded-lg px-5">{instructor.name}</p></SwiperSlide>)}
       </Swiper>
     </div>
   );

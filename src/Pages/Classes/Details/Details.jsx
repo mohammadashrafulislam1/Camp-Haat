@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Aos from 'aos';
 import 'aos/dist/aos.css'
+import useAuth from "../../../hock/useAuth";
+import Swal from "sweetalert2";
 const Details = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [course, setCourse] = useState(null);
-  
+    const {user} = useAuth();
     useEffect(() => {
       Aos.init();
       fetch(`http://localhost:5000/courses/${id}`)
@@ -14,6 +17,80 @@ const Details = () => {
         .catch((error) => console.log(error));
     }, [id]);
    console.log(course)
+   const handleEnroll = (course) => {
+    if (user) {
+      if (course.seats > 0) {
+        const updatedCourse = {
+          ...course,
+          seats: course.seats - 1,
+          enroll: course.enroll + 1
+        };
+  
+        // Update the course
+        fetch(`http://localhost:5000/courses/${course._id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedCourse),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // Check if the course was successfully updated
+            if (data.modifiedCount > 0) {
+              // Create a new cart entry
+        fetch(`http://localhost:5000/carts`, {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...updatedCourse, _id: undefined }),
+    })
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.insertedId) {
+                    setCourse(updatedCourse);
+                    Swal.fire({
+                      position: 'top-end',
+                      icon: 'success',
+                      title: 'Your course has been added to cart.',
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+                  }
+                })
+                .catch((error) => console.log(error));
+            } else {
+              console.log('Failed to update the course.');
+            }
+          })
+          .catch((error) => console.log(error));
+      } else {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No available seats left.',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } else {
+      Swal.fire({
+        title: 'Please Login First.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Login Now',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
+    }
+  };
+  
+  
     return (
       <>
         <div className="bg-white rounded-lg shadow-lg p-6  mb-20">
@@ -31,9 +108,9 @@ const Details = () => {
     </div>
     <div className="bg-gray-100 mb-10 rounded-lg p-4 text-center" data-aos="fade" data-aos-offset="200">
     <p className="text-gray-600 text-xl mb-2">Available Seats: {course?.seats}</p>
-    <p className="text-gray-600 text-xl mb-2">Enrollment: {course?.enrollment}</p>
+    <p className="text-gray-600 text-xl mb-2">Enrollment: {course?.enroll}</p>
     <p className="text-gray-600 text-xl">Price: ${course?.price}</p>
-    <button className="btn btn-primary w-full mt-10">Enroll</button>
+    <button disabled={course?.seats === 0} className="btn btn-primary w-full mt-10" onClick={()=>handleEnroll(course)}>Enroll</button>
   </div>
 
 </>
