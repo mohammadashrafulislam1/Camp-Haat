@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Aos from 'aos';
+import 'aos/dist/aos.css'
 const Classes = () => {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
+    Aos.init();
     fetch("http://localhost:5000/courses")
       .then((res) => res.json())
       .then((data) => setClasses(data));
@@ -13,7 +15,7 @@ const Classes = () => {
   return (
     <div className="flex flex-wrap justify-center">
       {classes.map((classItem) => (
-        <div
+        <div data-aos="flip-right" data-aos-offset="200"
           key={classItem?._id}
           className="max-w-sm rounded overflow-hidden shadow-lg m-4"
         >

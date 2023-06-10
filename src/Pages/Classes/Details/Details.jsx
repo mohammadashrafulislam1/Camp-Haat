@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import Aos from 'aos';
+import 'aos/dist/aos.css'
 const Details = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
   
     useEffect(() => {
+      Aos.init();
       fetch(`http://localhost:5000/courses/${id}`)
         .then((res) => res.json())
         .then((data) => setCourse(data))
@@ -16,10 +18,10 @@ const Details = () => {
       <>
         <div className="bg-white rounded-lg shadow-lg p-6  mb-20">
   <div
-    className="rounded-lg inset-0 bg-cover bg-center h-[400px]"
+    className="rounded-lg inset-0 bg-cover bg-center h-[400px]" data-aos="fade-up" data-aos-offset="200"
     style={{ backgroundImage: `url(${course?.image})` }}
   ></div>
-  <div className="mt-10 z-10 bg-gray-100 rounded-lg p-4 ">
+  <div className="mt-10 z-10 bg-gray-100 rounded-lg p-4 " data-aos="fade-up" data-aos-offset="200">
     <h2 className="text-2xl font-bold mb-4">{course?.name}</h2>
     <p className="text-gray-700 text-lg mb-4">{course?.details}</p>
     <div className="flex items-center">
@@ -27,7 +29,7 @@ const Details = () => {
     </div>
   </div>
     </div>
-    <div className="bg-gray-100 mb-10 rounded-lg p-4 text-center">
+    <div className="bg-gray-100 mb-10 rounded-lg p-4 text-center" data-aos="fade" data-aos-offset="200">
     <p className="text-gray-600 text-xl mb-2">Available Seats: {course?.seats}</p>
     <p className="text-gray-600 text-xl mb-2">Enrollment: {course?.enrollment}</p>
     <p className="text-gray-600 text-xl">Price: ${course?.price}</p>
