@@ -11,7 +11,7 @@ const Dashboard = () => {
         <title>Camp Haat - Dashboard</title>
     </Helmet>
        <div className="flex overflow-hidden w-full">
-        <div className=" lg:drawer-open fixed w-[18%]">
+        <div className=" lg:drawer-open fixed w-[20%]">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
           {/* Page content here */}
@@ -46,7 +46,7 @@ const Dashboard = () => {
           </ul>}
       </div>
       </div>
-     <div className="w-[60%] mx-auto">
+     <div className="w-[80%] md:ms-[300px] me-[100px]">
      <Outlet></Outlet>
      </div>
       </div>

@@ -1,48 +1,22 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import SectionTitle from '../../shared/SectionTitle/SectionTitle';
 
 const PopularSection = () => {
-  useEffect(() => {
-    AOS.init();
-  }, []);
-
-  const categories = [
-    { title: 'Category 1', image: 'https://example.com/category1.jpg' },
-    { title: 'Category 2', image: 'https://example.com/category2.jpg' },
-    { title: 'Category 3', image: 'https://example.com/category3.jpg' },
-    { title: 'Category 4', image: 'https://example.com/category4.jpg' },
-    { title: 'Category 5', image: 'https://example.com/category5.jpg' },
-    { title: 'Category 6', image: 'https://example.com/category6.jpg' },
-  ];
-
   return (
-   <>
-   <SectionTitle heading="Popular Classes" subHeading="See top six classes" moto="BEST CLASSES"></SectionTitle>
-    <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-20">    
-      {categories.map((category, index) => (
-        <div
-          className="max-w-sm rounded-ss-full rounded-ee-full overflow-hidden relative bg-gray-800 text-white"
-          key={index}
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          <div
-            className="h-56 bg-cover bg-center"
-            style={{ backgroundImage: `url(${category.image})` }}
-          >
-            <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                {category.title}
-              </button>
-            </div>
-          </div>
+    <section className="bg-purple-700 py-16 px-10">
+    <div className="container mx-auto">
+      <h2 className="text-5xl text-white text-center font-bold mb-8">Welcome to Our Website</h2>
+      <p className="text-lg text-white text-center mb-12">Here you can do and explore several activities:</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="bg-white rounded shadow p-8">
+          <h3 className="text-2xl text-purple-700 font-semibold mb-4">ADD CLASSES</h3>
+          <p className="text-gray-700">If you are a teacher you can create class related to drawing.</p>
         </div>
-      ))}
+        <div className="bg-white rounded shadow p-8">
+          <h3 className="text-2xl text-purple-700 font-semibold mb-4">EXPLORE AS A STUDENT</h3>
+          <p className="text-gray-700">Student can purchase any course or courses in order to make them skillful.</p>
+        </div>
+      </div>
     </div>
-    </>
+  </section>
   );
 };
 

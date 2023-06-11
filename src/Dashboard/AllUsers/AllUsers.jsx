@@ -24,6 +24,36 @@ const AllUsers = () => {
       }
     })
   }
+  const handleMakeInstructor = user =>{
+    fetch(`http://localhost:5000/users/Instructor/${user._id}`,
+    {
+      method:'PATCH'
+    })
+    .then(res => res.json())
+    .then(data =>{
+      if(data.modifiedCount){
+        Swal.fire(
+          'Good job!',
+          `${user.name} is now an'Instructor'`,
+          'success'
+        );
+        refetch();
+      }
+    })
+  }
+  const handleDeleteUser = (user) => {
+    fetch(`http://localhost:5000/users/${user._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount) {
+          Swal.fire("Deleted!", `${user.name} has been deleted.`, "success");
+          refetch();
+        }
+      });
+  };
+
   return (
     <div>
       <Helmet>
@@ -62,7 +92,10 @@ const AllUsers = () => {
               {user.role === 'admin' ? <button className="btn btn-xs">Admin</button> : <button className="btn btn-primary btn-xs" onClick={() => handleMakeAdmin(user)}>Make Admin</button>}
             </th>
             <th>
-              <button className="btn btn-warning btn-xs">Delete</button>
+              {user.role === 'Instructor' ? <button className="btn btn-xs">Instructor</button> : <button className="btn btn-primary btn-xs" onClick={() => handleMakeInstructor(user)}>Make Instructor</button>}
+            </th>
+            <th>
+              <button className="btn btn-warning btn-xs" onClick={() => handleDeleteUser(user)}>Delete</button>
             </th>
           </tr>)
       }
