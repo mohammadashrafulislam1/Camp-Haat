@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hock/useAxiosSecure";
 import useAuth from "../../../hock/useAuth";
 import Swal from "sweetalert2";
 import SectionTitle from "../../../shared/SectionTitle/SectionTitle";
+import { Link } from "react-router-dom";
 
 const MyCarts = () => {
     const {user} = useAuth();
@@ -17,32 +18,6 @@ const MyCarts = () => {
             setMycarts(data)
         })
     })
-    const handleDelete = (id, seats) => {
-        console.log(id);
-        axiosSecure.delete(`/mycarts/${id}`).then((res) => {
-          if (res.data.deletedCount > 0) {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Successfully Deleted",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            updateSeats(id, seats);
-          }
-        });
-      };
-    
-      const updateSeats = (id, seats) => {
-        axiosSecure
-          .patch(`/courses/${id}`, { seats: seats + 1 })
-          .then((res) => {
-            console.log(res.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
     const totalPrice = mycarts?.reduce(
         (accumulator, currentCart) => accumulator + currentCart.price,
         0
@@ -56,6 +31,7 @@ const MyCarts = () => {
     subHeading="All Added Courses" moto="Courses"></SectionTitle>
     <div className="flex justify-between">   
     <h3 className="text-2xl font-semibold">Total courses: {mycarts?.length}</h3>
+    <Link to="/dashboard/payment"><button className="btn btn-primary btn-sm">PAY</button></Link>
     <h3 className="text-2xl font-semibold">Total price: {totalPrice}</h3>
     </div>
   <table className="table border rounded-lg p-10 my-10">
@@ -66,7 +42,6 @@ const MyCarts = () => {
         <th>Course Name</th>
         <th>Instructor</th>
         <th>Price</th>
-        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -82,9 +57,6 @@ const MyCarts = () => {
         </td>
         <td>{mycart.instructor}</td>
         <td>{mycart.price}</td>
-        <td>
-          <button className="btn btn-xs bg-red-600 text-white" onClick={()=>handleDelete(mycart._id, mycart.seats)}>Delete</button>
-        </td>
       </tr>)}
       
       </tbody>

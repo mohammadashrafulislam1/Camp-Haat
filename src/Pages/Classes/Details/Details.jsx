@@ -22,6 +22,7 @@ const Details = () => {
         .then((data) => setCourse(data))
         .catch((error) => console.log(error));
     }, [id]);
+    console.log(course)
    const handleEnroll = (course) => {
     {allusers?.map(oneuser =>{
      if (oneuser.role === 'Student') {
@@ -116,7 +117,8 @@ const Details = () => {
     <div className="bg-gray-100 mb-10 rounded-lg p-4 text-center" data-aos="fade" data-aos-offset="200">
     <p className="text-gray-600 text-xl mb-2">Available Seats: {course?.seats}</p>
     <p className="text-gray-600 text-xl mb-2">Enrollment: {course?.enroll}</p>
-    <p className="text-gray-600 text-xl">Price: ${course?.price}</p>
+    <p className="text-gray-600 text-xl">Price: ${course?.price}</p> <br />
+    <p>[Note: Once You Enroll You Will Not Able To Delete it.]</p>
     <button disabled={course?.seats === 0} className="btn btn-primary w-full mt-10" onClick={()=>handleEnroll(course)}>Enroll</button>
   </div>
 

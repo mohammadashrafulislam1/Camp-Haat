@@ -15,6 +15,7 @@ import Instructor from "../Pages/Instructor/Instructor";
 import Classes from "../Pages/Classes/Classes";
 import Details from "../Pages/Classes/Details/Details";
 import MyCarts from "../Dashboard/StudentDashboard/MyCarts/MyCarts";
+import Payment from "../Dashboard/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
             {
               path:'mycarts',
               element:<MyCarts></MyCarts>
+            },
+            {
+              path:'payment',
+              element:<Payment></Payment>
             }
             
         ]
