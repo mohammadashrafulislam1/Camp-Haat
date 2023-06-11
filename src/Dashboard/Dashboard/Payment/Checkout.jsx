@@ -1,10 +1,27 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hock/useAxiosSecure";
+import useAuth from "../../../hock/useAuth";
 
-const Checkout = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [error, setError] = useState(null);
+const Checkout = ({ price }) => {
+ const stripe = useStripe();
+    const elements = useElements();
+    const { user } = useAuth();
+    const [axiosSecure] = useAxiosSecure()
+    const [paymentError, setPaymentError] = useState('');
+    const [clientSecret, setClientSecret] = useState('');
+    const [processing, setProcessing] = useState(false);
+    const [transactionId, setTransactionId] = useState('');
+
+  useEffect(() => {
+        if (price > 0) {
+            axiosSecure.post('/create-payment-intent', { price })
+                .then(res => {
+                    console.log(res.data.clientSecret)
+                    setClientSecret(res.data.clientSecret);
+                })
+        }
+    }, [price, axiosSecure])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,16 +36,42 @@ const Checkout = () => {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
 
     if (error) {
-      setError(error.message);
+      setPaymentError(error.message);
     } else {
-      setError("");
-      console.log(paymentMethod);
+      setPaymentError();
+    }
+    setProcessing(true)
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
+      clientSecret,
+      {
+        payment_method: {
+          card: card,
+          billing_details: {
+            email: user?.email || "Unknown",
+            name: user?.displayName || "Unknown",
+          },
+        },
+      }
+    );
+
+    if (confirmError) {
+      setPaymentError(confirmError.message);
+    }else{
+      setPaymentError()
+    }
+
+    console.log(paymentIntent);
+    setProcessing(false)
+    if(paymentIntent.status === 'succeeded'){
+      const transactionId = paymentIntent.id;
+      setTransactionId(transactionId)
+      // TODO
     }
   };
 
@@ -60,15 +103,22 @@ const Checkout = () => {
       <button
         className="btn btn-primary btn-sm mt-6 px-4 py-2 w-full text-white font-semibold rounded"
         type="submit"
-        disabled={!stripe}
+        disabled={!stripe || !clientSecret || processing}
       >
         Pay
       </button>
-      {error && (
+      {paymentError && (
         <div className="bg-red-100 text-red-500 px-4 py-2 mt-4 rounded">
-          {error}
+          {paymentError}
         </div>
       )}
+      {
+        transactionId && (
+          <div className="bg-green-100 text-green-500 px-4 py-2 mt-4 rounded">
+           Completed Transaction with: {transactionId}
+          </div>
+        )
+      }
     </form>
   );
 };

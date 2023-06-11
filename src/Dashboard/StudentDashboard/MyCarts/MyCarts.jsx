@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
+
 import { Helmet } from "react-helmet";
-import useAxiosSecure from "../../../hock/useAxiosSecure";
-import useAuth from "../../../hock/useAuth";
 import Swal from "sweetalert2";
 import SectionTitle from "../../../shared/SectionTitle/SectionTitle";
 import { Link } from "react-router-dom";
+import useCart from "../../../hock/useCart";
 
 const MyCarts = () => {
-    const {user} = useAuth();
-    const [axiosSecure] =useAxiosSecure();
-    const [mycarts, setMycarts] = useState();
-    const url = `http://localhost:5000/mycarts?enrollEmail=${user.email}`;
-    useEffect(()=>{
-        fetch(url)
-        .then(res => res.json())
-        .then(data =>{
-            setMycarts(data)
-        })
-    })
+    const [mycarts] =useCart();
     const totalPrice = mycarts?.reduce(
         (accumulator, currentCart) => accumulator + currentCart.price,
         0
