@@ -51,7 +51,7 @@ const Details = () => {
       headers: {
       'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...updatedCourse, _id: undefined, enrollEmail: user?.email }),
+      body: JSON.stringify({ ...updatedCourse, _id: undefined, enrollEmail: user?.email, courseItemId: course._id }),
     })
                 .then((res) => res.json())
                 .then((data) => {

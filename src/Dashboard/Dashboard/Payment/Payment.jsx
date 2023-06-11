@@ -18,7 +18,7 @@ const Payment = () => {
         <div>
         <SectionTitle heading="Pay Now" subHeading="Pay in a secure way" moto="PAY"></SectionTitle>
         <Elements stripe={stripePromise}>
-        <Checkout price={price}></Checkout>
+        <Checkout cart={mycarts} price={price}></Checkout>
         </Elements>
         
         </div>

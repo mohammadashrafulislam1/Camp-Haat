@@ -1,6 +1,5 @@
 
 import { Helmet } from "react-helmet";
-import Swal from "sweetalert2";
 import SectionTitle from "../../../shared/SectionTitle/SectionTitle";
 import { Link } from "react-router-dom";
 import useCart from "../../../hock/useCart";

@@ -1,27 +1,28 @@
+
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hock/useAxiosSecure";
 import useAuth from "../../../hock/useAuth";
+import Swal from "sweetalert2";
 
-const Checkout = ({ price }) => {
- const stripe = useStripe();
-    const elements = useElements();
-    const { user } = useAuth();
-    const [axiosSecure] = useAxiosSecure()
-    const [paymentError, setPaymentError] = useState('');
-    const [clientSecret, setClientSecret] = useState('');
-    const [processing, setProcessing] = useState(false);
-    const [transactionId, setTransactionId] = useState('');
+const Checkout = ({ price, cart }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const { user } = useAuth();
+  const [axiosSecure] = useAxiosSecure();
+  const [paymentError, setPaymentError] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
   useEffect(() => {
-        if (price > 0) {
-            axiosSecure.post('/create-payment-intent', { price })
-                .then(res => {
-                    console.log(res.data.clientSecret)
-                    setClientSecret(res.data.clientSecret);
-                })
-        }
-    }, [price, axiosSecure])
+    if (price > 0) {
+      axiosSecure.post("/create-payment-intent", { price }).then((res) => {
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      });
+    }
+  }, [price, axiosSecure]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,9 +45,9 @@ const Checkout = ({ price }) => {
     if (error) {
       setPaymentError(error.message);
     } else {
-      setPaymentError();
+      setPaymentError("");
     }
-    setProcessing(true)
+    setProcessing(true);
     const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
       clientSecret,
       {
@@ -62,16 +63,39 @@ const Checkout = ({ price }) => {
 
     if (confirmError) {
       setPaymentError(confirmError.message);
-    }else{
-      setPaymentError()
+    } else {
+      setPaymentError("");
     }
 
     console.log(paymentIntent);
-    setProcessing(false)
-    if(paymentIntent.status === 'succeeded'){
+    setProcessing(false);
+    if (paymentIntent.status === "succeeded") {
       const transactionId = paymentIntent.id;
-      setTransactionId(transactionId)
-      // TODO
+      setTransactionId(transactionId);
+
+      const payment = {
+        email: user.email,
+        transactionId,
+        price,
+        date: new Date(),
+        quantity: cart.length,
+        cartItems: cart.map((i) => i._id),
+        courseItems: cart.map((i) => i.courseItemId),
+        status: 'Pending',
+        itemNames: cart.map((i) => i.name),
+      };
+      axiosSecure.post("/payments", payment).then((res) => {
+        console.log(res.data);
+        if (res.data.insertResult.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Payment Successful`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
     }
   };
 
