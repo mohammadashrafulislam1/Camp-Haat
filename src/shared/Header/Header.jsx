@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import useAuth from "../../hock/useAuth";
 import useCart from "../../hock/useCart";
+import useAdmin from "../../hock/useAdmin";
+import useInstructor from "../../hock/useInstructor";
 
 const Header = () => {
     const mycarts = useCart();
@@ -13,6 +15,8 @@ const Header = () => {
      <Link className="mx-5 font-bold" to='/instructors'><li>Instructors</li></Link>
      <Link className="mx-5 font-bold" to='/classes'><li>Classes</li></Link>
     </>
+     const [isAdmin] = useAdmin();
+     const [isTeacher] =useInstructor();
     return (
         <div className="navbar bg-base-100 mt-5">
   <div className="navbar-start">
@@ -41,9 +45,10 @@ const Header = () => {
       </label>
       <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
         <li>
-          <Link to='/dashboard'>Dashboard</Link>
+          <Link to={isAdmin ? '/dashboard/admindashboard' : isTeacher ? '/dashboard/teacherdashboard' : '/dashboard/studentdashboard'}>Dashboard</Link>
         </li>
-        <li><a>Settings</a></li>
+        <li><Link to="/dashboard/profile">Profile
+        </Link></li>
         <li onClick={handleLogOut}><a>Logout</a></li>
       </ul>
     </div> : <Link to="/login"><button className="btn btn-outline btn-secondary">Login</button></Link>}

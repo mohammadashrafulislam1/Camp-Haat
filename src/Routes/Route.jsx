@@ -19,6 +19,7 @@ import Payment from "../Dashboard/Dashboard/Payment/Payment";
 import PaymentHistory from "../Dashboard/StudentDashboard/PaymentHistory/PaymentHistory";
 import Ordered from "../Dashboard/TeacherDashboard/Ordered";
 import AllCourses from "../Dashboard/AdminDashboard/AllCourses/AllCourses";
+import Profile from "../shared/Profile/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([
         element:<Dashboard></Dashboard>,
         errorElement:<ErrorPage/>,
         children:[
+          // For All
+          {
+            path: 'profile',
+            element:<Profile></Profile>
+          },
           // Admin area
             {
               path:'admindashboard',

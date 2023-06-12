@@ -23,7 +23,7 @@ const Login = () => {
     return (
         <div>
     <Helmet>
-        <title>Camp Haat - Registration</title>
+        <title>Camp Haat - Login</title>
     </Helmet>
     <div className="hero min-h-screen">
   <div className="flex md:flex-row my-10 w-3/4 gap-10 items-center">

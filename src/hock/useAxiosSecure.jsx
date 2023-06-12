@@ -30,7 +30,7 @@ const useAxiosSecure = () => {
         return Promise.reject(error);
       }
     );
-  }, [logOut, navigate, axiosSecure]);
+  }, [logOut, navigate, axiosSecure]); // Add axiosSecure to the dependencies array
 
   return axiosSecure;
 };

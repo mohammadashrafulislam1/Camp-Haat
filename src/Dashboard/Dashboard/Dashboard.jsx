@@ -1,10 +1,9 @@
 import { Helmet } from "react-helmet";
 import { Link, Outlet } from "react-router-dom";
-import { FaBlog, FaBook, FaCartPlus, FaHome, FaHouseUser, FaMoneyBill, FaPlus, FaUsers, FaVideo } from "react-icons/fa";
+import { FaBlog, FaBook, FaCartPlus, FaHome, FaHouseUser, FaLaugh, FaMoneyBill, FaPersonBooth, FaPlus, FaUsers, FaVideo } from "react-icons/fa";
 import useAdmin from "../../hock/useAdmin";
 import useInstructor from "../../hock/useInstructor";
 const Dashboard = () => {
-    //TO DO:
     const [isAdmin] = useAdmin();
     const [isTeacher] =useInstructor();
     return (
@@ -31,6 +30,8 @@ const Dashboard = () => {
 
            <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
+          <Link to="/dashboard/profile" className="btn flex"><FaLaugh></FaLaugh><li>Profile</li>
+        </Link>
           </ul> 
           :
           isTeacher?
@@ -41,7 +42,8 @@ const Dashboard = () => {
             <Link to='/dashboard/ordered' className="btn flex"><FaBook></FaBook><li>Ordered</li></Link>
             <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
-         
+            <Link to="/dashboard/profile" className="btn flex"><FaLaugh></FaLaugh><li>Profile</li>
+        </Link>
           </ul>
           : 
           <ul className="menu p-4  h-full bg-base-200 text-base-content">
@@ -52,6 +54,8 @@ const Dashboard = () => {
             <Link to='/dashboard/paymenthistory' className="btn flex"><FaMoneyBill></FaMoneyBill><li>Payment History</li></Link>
             <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
+            <Link to="/dashboard/profile" className="btn flex"><FaLaugh></FaLaugh><li>Profile</li>
+        </Link>
           </ul>}
       </div>
       </div>
