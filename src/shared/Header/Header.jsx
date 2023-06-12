@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import useAuth from "../../hock/useAuth";
+import useCart from "../../hock/useCart";
 
 const Header = () => {
+    const mycarts = useCart();
     const {user, logOut} = useAuth();
     const handleLogOut =()=>{
         logOut();
@@ -12,7 +14,7 @@ const Header = () => {
      <Link className="mx-5 font-bold" to='/classes'><li>Classes</li></Link>
     </>
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 mt-5">
   <div className="navbar-start">
     <div className="dropdown">
       <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -31,7 +33,8 @@ const Header = () => {
   </div>
   <div className="navbar-end z-10">
   {user? <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom"  data-tip={`${user?.displayName}`}>
+      <label tabIndex={0} className="btn btn-ghost btn-circle avatar indicator tooltip tooltip-bottom"  data-tip={`${user?.displayName}`}>
+      <span className="indicator-item badge badge-secondary">{mycarts?.length ||0}</span> 
         <div className="w-10 rounded-full">
           <img src={user?.photoURL} />
         </div>

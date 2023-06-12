@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import useCart from "../../../hock/useCart";
 
 const MyCarts = () => {
-    const [mycarts] =useCart();
-    const totalPrice = mycarts?.reduce(
+    const mycarts =useCart();
+    if (Array.isArray(mycarts)) {
+      const totalPrice = mycarts.reduce(
         (accumulator, currentCart) => accumulator + currentCart.price,
         0
       );
@@ -51,6 +52,6 @@ const MyCarts = () => {
   </table>
 </div>
     );
-};
+}};
 
 export default MyCarts;

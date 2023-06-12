@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
  const imgHostingToken =import.meta.env.VITE_Img_Upload_Token;
 const AddCourse = () => {
     const imgHostingUrl =`https://api.imgbb.com/1/upload?key=${imgHostingToken}`;
-    const [axiosSecure] =useAxiosSecure();
+    const axiosSecure =useAxiosSecure();
     const {user} = useAuth();
     const {
         getValues,
@@ -30,7 +30,7 @@ const AddCourse = () => {
         if(imgResponse.success){
             const imgUrl = imgResponse.data.display_url;
             const {name, price, details, seats} = data;
-            const courseItem ={name, price: parseFloat(price), instructor: user?.displayName, details, seats: parseFloat(seats), image: imgUrl, email: user?.email, enroll: 0}
+            const courseItem ={name, price: parseFloat(price), instructor: user?.displayName, details, seats: parseFloat(seats), image: imgUrl, email: user?.email, enroll: 0, status: 'pending'}
             console.log(courseItem)
             axiosSecure.post('/courses', courseItem)
             .then(res =>{

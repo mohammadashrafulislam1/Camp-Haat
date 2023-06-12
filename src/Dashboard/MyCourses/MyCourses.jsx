@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet";
 
 const MyCourses = () => {
     const {user} = useAuth();
-    const [axiosSecure] =useAxiosSecure();
+    const axiosSecure =useAxiosSecure();
     const [mycourses, setMycourses] = useState();
     const url = `http://localhost:5000/mycourses?email=${user.email}`;
     useEffect(()=>{

@@ -1,10 +1,12 @@
 import { Helmet } from "react-helmet";
 import { Link, Outlet } from "react-router-dom";
-import { FaHome, FaHouseUser, FaPlus, FaUsers, FaVideo } from "react-icons/fa";
+import { FaBlog, FaBook, FaCartPlus, FaHome, FaHouseUser, FaMoneyBill, FaPlus, FaUsers, FaVideo } from "react-icons/fa";
+import useAdmin from "../../hock/useAdmin";
+import useInstructor from "../../hock/useInstructor";
 const Dashboard = () => {
     //TO DO:
-    const isAdmin = false;
-    const isTeacher =true;
+    const [isAdmin] = useAdmin();
+    const [isTeacher] =useInstructor();
     return (
       <div className="w-full">
       <Helmet>
@@ -24,6 +26,9 @@ const Dashboard = () => {
           <Link to='/dashboard/admindashboard' className="btn flex"><FaHouseUser></FaHouseUser><li>Admin Home</li></Link>
           <Link to='/dashboard/allusers' className="btn flex">
            <FaUsers></FaUsers><li>AllUsers</li></Link>
+           <Link to='/dashboard/allcourses' className="btn flex">
+           <FaBlog></FaBlog><li>All Courses</li></Link>
+
            <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
           </ul> 
@@ -33,14 +38,18 @@ const Dashboard = () => {
             <Link to='/dashboard/teacherdashboard' className="btn flex"><FaHouseUser></FaHouseUser><li>Teacher Home</li></Link>
             <Link to='/dashboard/mycourses' className="btn flex"><FaVideo></FaVideo><li>My Courses</li></Link>
             <Link to='/dashboard/addcourse' className="btn flex"><FaPlus></FaPlus><li>Add Course</li></Link>
+            <Link to='/dashboard/ordered' className="btn flex"><FaBook></FaBook><li>Ordered</li></Link>
             <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
          
           </ul>
           : 
           <ul className="menu p-4  h-full bg-base-200 text-base-content">
-            <Link to='/dashboard/studentdashboard'><FaHouseUser></FaHouseUser><li>Student Home</li></Link>
-            <Link to='/dashboard/allusers'><li></li></Link>
+            <Link to='/dashboard/studentdashboard' className="btn flex"><FaHouseUser></FaHouseUser><li>Student Home</li></Link>
+
+            <Link to='/dashboard/mycarts' className="btn flex"><FaCartPlus></FaCartPlus><li>My Cart</li></Link>
+
+            <Link to='/dashboard/paymenthistory' className="btn flex"><FaMoneyBill></FaMoneyBill><li>Payment History</li></Link>
             <div className="divider"></div> 
             <Link className="btn flex" to='/'><FaHome></FaHome><li>Home</li></Link>
           </ul>}

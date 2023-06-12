@@ -16,6 +16,9 @@ import Classes from "../Pages/Classes/Classes";
 import Details from "../Pages/Classes/Details/Details";
 import MyCarts from "../Dashboard/StudentDashboard/MyCarts/MyCarts";
 import Payment from "../Dashboard/Dashboard/Payment/Payment";
+import PaymentHistory from "../Dashboard/StudentDashboard/PaymentHistory/PaymentHistory";
+import Ordered from "../Dashboard/TeacherDashboard/Ordered";
+import AllCourses from "../Dashboard/AdminDashboard/AllCourses/AllCourses";
 
 export const router = createBrowserRouter([
     {
@@ -65,6 +68,10 @@ export const router = createBrowserRouter([
               path:'allusers',
               element:<AllUsers></AllUsers>
             },
+            {
+              path: 'allcourses',
+              element:<AllCourses></AllCourses>
+            },
             // Teacher area
             {
               path:'teacherdashboard',
@@ -78,6 +85,10 @@ export const router = createBrowserRouter([
               path:'mycourses',
               element:<MyCourses></MyCourses>
             },
+            {
+              path:'ordered',
+              element:<Ordered></Ordered>
+            },
             // Student area
             {
                 path:'studentdashboard',
@@ -90,6 +101,10 @@ export const router = createBrowserRouter([
             {
               path:'payment',
               element:<Payment></Payment>
+            },
+            {
+              path:'paymenthistory',
+              element:<PaymentHistory></PaymentHistory>
             }
             
         ]

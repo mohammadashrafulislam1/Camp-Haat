@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 
-const useCart = ()=>{
-    const { user } = useAuth();
-    const [mycarts, setMycarts] = useState();
-    const url = `http://localhost:5000/mycarts?enrollEmail=${user?.email}`;
-    useEffect(()=>{
-        fetch(url)
-        .then(res => res.json())
-        .then(data =>{
-            setMycarts(data)
-        })
+const useCart = () => {
+  const { user } = useAuth();
+  const token = localStorage.getItem('access-token');
+  const [mycarts, setMycarts] = useState([]);
+
+  const url = `http://localhost:5000/mycarts?enrollEmail=${user?.email}`;
+
+  useEffect(() => {
+    fetch(url, {
+      headers: { authorization: `bearer ${token}` },
     })
-    return [mycarts]
-}
+      .then((res) => res.json())
+      .then((data) => {
+        setMycarts(data);
+      });
+  }, [url, token]);
+
+  return mycarts;
+};
+
 export default useCart;

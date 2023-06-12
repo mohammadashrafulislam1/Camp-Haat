@@ -4,28 +4,26 @@ import Aos from 'aos';
 import 'aos/dist/aos.css'
 import useAuth from "../../../hock/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hock/useAxiosSecure";
+import axios from "axios";
+
 const Details = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [course, setCourse] = useState(null);
-    const [allusers, setAllUsers] = useState();
-    const {user} = useAuth();
-    useEffect(()=>{
-      fetch('http://localhost:5000/users')
-      .then(res => res.json())
-      .then(data => setAllUsers(data))
-    },[])
-    useEffect(() => {
-      Aos.init();
-      fetch(`http://localhost:5000/courses/${id}`)
-        .then((res) => res.json())
-        .then((data) => setCourse(data))
-        .catch((error) => console.log(error));
-    }, [id]);
-    console.log(course)
-   const handleEnroll = (course) => {
-    {allusers?.map(oneuser =>{
-     if (oneuser.role === 'Student') {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [course, setCourse] = useState(null);
+  const { user} = useAuth();
+
+  useEffect(() => {
+    Aos.init();
+    fetch(`http://localhost:5000/courses/${id}`)
+      .then((res) => res.json())
+      .then((data) => setCourse(data))
+      .catch((error) => console.log(error));
+  }, [id]);
+  console.log(course)
+
+  const handleEnroll = (course) => {
+    if(user) {
       if (course?.seats > 0) {
         const updatedCourse = {
           ...course,
@@ -33,7 +31,6 @@ const Details = () => {
           enroll: course.enroll + 1
         };
   
-        // Update the course
         fetch(`http://localhost:5000/courses/${course._id}`, {
           method: 'PATCH',
           headers: {
@@ -43,16 +40,14 @@ const Details = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            // Check if the course was successfully updated
             if (data.modifiedCount > 0) {
-              // Create a new cart entry
-        fetch(`http://localhost:5000/carts`, {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...updatedCourse, _id: undefined, enrollEmail: user?.email, courseItemId: course._id }),
-    })
+              fetch(`http://localhost:5000/carts`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...updatedCourse, _id: undefined, enrollEmail: user?.email, courseItemId: course._id }),
+              })
                 .then((res) => res.json())
                 .then((data) => {
                   if (data.insertedId) {
@@ -60,7 +55,7 @@ const Details = () => {
                     Swal.fire({
                       position: 'top-end',
                       icon: 'success',
-                      title: 'Your course has been added to cart.',
+                      title: 'Your course has been added to the cart.',
                       showConfirmButton: false,
                       timer: 1500,
                     });
@@ -83,7 +78,7 @@ const Details = () => {
       }
     } else {
       Swal.fire({
-        title: 'Please Login First. Or login as a Student',
+        title: 'Please Login First or login as a Student',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Login Now',
@@ -95,7 +90,6 @@ const Details = () => {
         }
       });
     }
-    })}
   };
   
   

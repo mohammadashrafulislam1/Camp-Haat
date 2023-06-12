@@ -1,15 +1,15 @@
 
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import useAxiosSecure from "../../../hock/useAxiosSecure";
 import useAuth from "../../../hock/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hock/useAxiosSecure";
 
 const Checkout = ({ price, cart }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useAuth();
-  const [axiosSecure] = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const [paymentError, setPaymentError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -83,6 +83,7 @@ const Checkout = ({ price, cart }) => {
         courseItems: cart.map((i) => i.courseItemId),
         status: 'Pending',
         itemNames: cart.map((i) => i.name),
+        instructorEmail: cart.map((i) => i.email),
       };
       axiosSecure.post("/payments", payment).then((res) => {
         console.log(res.data);
